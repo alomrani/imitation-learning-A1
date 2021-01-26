@@ -36,7 +36,7 @@ def train_discrete(model, iterator, opt, args):
         opt.zero_grad()
         l = model(x)
         if args.weighted_loss:
-            loss = F.cross_entropy(l, y, args.class_dist)
+            loss = F.cross_entropy(l, y, 1. / torch.tensor(args.class_dist))
         else:
             loss = F.cross_entropy(l, y)
         loss.backward()

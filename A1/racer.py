@@ -17,8 +17,10 @@ def run(steering_network, args):
     
     learner_action = np.array([0.0, 0.0, 0.0])
     expert_action = None
-    
+    cross_track_error = 0
+    i = 0
     for t in range(args.timesteps):
+        i = t
         env.render()
         
         state, expert_action, reward, done, _ = env.step(learner_action) 
@@ -32,19 +34,20 @@ def run(steering_network, args):
         if args.expert_drives:
             learner_action[0] = expert_steer
         else:
-            learner_action[0] = steering_network.eval(state, device=DEVICE)
-            
+            learner_action[0] = steering_network.eval1(state, device=DEVICE)
+
         learner_action[1] = expert_gas
         learner_action[2] = expert_brake
 
         if args.save_expert_actions:
             scipy.misc.imsave(os.path.join(args.out_dir, 'expert_%d_%d_%f.jpg' % (args.run_id, t, expert_steer)), state)
-
+        cross_track_error += env.get_cross_track_error(env.car, env.track)[0]
     env.close()
+    return cross_track_error / (i + 1)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out_dir", help="directory in which to save the expert's data", default='./dataset/train')
+    parser.add_argument("--out_dir", help="directory in which to save the expert's data", default='./dataset_1/train')
     parser.add_argument("--save_expert_actions", type=str2bool, help="save the images and expert actions in the training set",
                         default=False)
     
