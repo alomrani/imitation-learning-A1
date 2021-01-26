@@ -57,7 +57,7 @@ if __name__ == "__main__":
     parser.add_argument("--dagger_iterations", help="", default=10)
     parser.add_argument("--out_dir", help="directory in which to save the expert's data", default='./dataset_1/train')
     parser.add_argument("--save_expert_actions", type=str2bool, help="save the images and expert actions in the training set",
-                        default=False)
+                        default=True)
     parser.add_argument("--timesteps", type=int, help="timesteps of simulation to run, up to one full loop of the track", default=100000)
     parser.add_argument("--expert_drives", type=str2bool, help="should the expert steer the vehicle?", default=False)
     parser.add_argument("--run_id", type=int, help="Id for this particular data collection run (e.g. dagger iterations)", default=1)
