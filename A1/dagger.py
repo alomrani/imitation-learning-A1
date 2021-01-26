@@ -50,8 +50,8 @@ if __name__ == "__main__":
     parser.add_argument("--n_epochs", type=int, help="number of epochs", default=50)
     parser.add_argument("--batch_size", type=int, help="batch_size", default=256)
     parser.add_argument("--n_steering_classes", type=int, help="number of steering classes", default=20)
-    parser.add_argument("--train_dir", help="directory of training data", default='./dataset/train')
-    parser.add_argument("--validation_dir", help="directory of validation data", default='./dataset/val')
+    parser.add_argument("--train_dir", help="directory of training data", default='./dataset_1/train')
+    parser.add_argument("--validation_dir", help="directory of validation data", default='./dataset_1/val')
     parser.add_argument("--weights_out_file", help="where to save the weights of the network e.g. ./weights/learner_0.weights", default='./weights')
     parser.add_argument("--dagger_iterations", help="", default=10)
     parser.add_argument("--out_dir", help="directory in which to save the expert's data", default='./dataset_1/train')
@@ -86,6 +86,6 @@ if __name__ == "__main__":
         cross_track_error = run(current_learner, args)
         cr.append(cross_track_error)
         print('RETRAINING LEARNER ON AGGREGATED DATASET')
-        args.weights_out_file = os.path.join(args.weights_out_file, "learner_{}_weights.weights".format(i))
+        args.weights_out_file = os.path.join("./weights", "learner_{}_weights.weights".format(i))
         train_epochs(args, data_transform)
 
