@@ -54,6 +54,12 @@ if __name__ == "__main__":
     parser.add_argument("--validation_dir", help="directory of validation data", default='./dataset/val')
     parser.add_argument("--weights_out_file", help="where to save the weights of the network e.g. ./weights/learner_0.weights", default='./weights')
     parser.add_argument("--dagger_iterations", help="", default=10)
+    parser.add_argument("--out_dir", help="directory in which to save the expert's data", default='./dataset_1/train')
+    parser.add_argument("--save_expert_actions", type=str2bool, help="save the images and expert actions in the training set",
+                        default=False)
+    
+    parser.add_argument("--expert_drives", type=str2bool, help="should the expert steer the vehicle?", default=False)
+    parser.add_argument("--run_id", type=int, help="Id for this particular data collection run (e.g. dagger iterations)", default=0)
     args = parser.parse_args()
 
     #####
@@ -74,10 +80,12 @@ if __name__ == "__main__":
     for i in range(args.dagger_interations):
 
         print('GETTING EXPERT DEMONSTRATIONS')
+        args.run_id = i
         current_learner = DiscreteDrivingPolicy(n_classes=args.n_steering_classes).to(DEVICE)
         current_learner.load_weights_from(args.weights_out_file)
         cross_track_error = run(current_learner, args)
         cr.append(cross_track_error)
         print('RETRAINING LEARNER ON AGGREGATED DATASET')
-        args.weights_out_file = os.path.join(args.weights_out_file, "learner_{i}_weights.weights")
+        args.weights_out_file = os.path.join(args.weights_out_file, "learner_{}_weights.weights".format(i))
         train_epochs(args, data_transform)
+
