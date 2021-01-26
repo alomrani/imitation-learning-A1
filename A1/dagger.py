@@ -79,9 +79,9 @@ if __name__ == "__main__":
                                           transforms.ToTensor()])
     
     args.weights_out_file = os.path.join("./weights", "learner_{}_weights.weights".format(0))
-    train_epochs(args, data_transform)
+    # train_epochs(args, data_transform)
     cr = []
-    for i in range(args.dagger_interations):
+    for i in range(args.dagger_iterations):
 
         print('GETTING EXPERT DEMONSTRATIONS')
         args.run_id = i
