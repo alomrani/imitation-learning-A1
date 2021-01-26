@@ -60,6 +60,9 @@ if __name__ == "__main__":
     
     parser.add_argument("--expert_drives", type=str2bool, help="should the expert steer the vehicle?", default=False)
     parser.add_argument("--run_id", type=int, help="Id for this particular data collection run (e.g. dagger iterations)", default=0)
+    parser.add_argument("--weighted_loss", type=str2bool,
+                        help="should you weight the labeled examples differently based on their frequency of occurence",
+                        default=False)
     args = parser.parse_args()
 
     #####
@@ -74,7 +77,7 @@ if __name__ == "__main__":
                                           transforms.RandomRotation(degrees=80),
                                           transforms.ToTensor()])
     
-
+    args.weights_out_file = os.path.join("./weights", "learner_{}_weights.weights".format(0))
     train_epochs(args, data_transform)
     cr = []
     for i in range(args.dagger_interations):
