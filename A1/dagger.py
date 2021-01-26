@@ -60,7 +60,7 @@ if __name__ == "__main__":
                         default=False)
     parser.add_argument("--timesteps", type=int, help="timesteps of simulation to run, up to one full loop of the track", default=100000)
     parser.add_argument("--expert_drives", type=str2bool, help="should the expert steer the vehicle?", default=False)
-    parser.add_argument("--run_id", type=int, help="Id for this particular data collection run (e.g. dagger iterations)", default=0)
+    parser.add_argument("--run_id", type=int, help="Id for this particular data collection run (e.g. dagger iterations)", default=1)
     parser.add_argument("--weighted_loss", type=str2bool,
                         help="should you weight the labeled examples differently based on their frequency of occurence",
                         default=False)
