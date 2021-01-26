@@ -7,13 +7,14 @@ from torch.utils.data import Dataset, DataLoader
 import argparse
 import time
 import os
-# from tqdm import tdqm
+from tqdm import tqdm
 from dataset_loader import DrivingDataset
 from driving_policy import DiscreteDrivingPolicy
 from train_policy import get_class_distribution, test_discrete, train_discrete
 from utils import DEVICE, str2bool
 import torch
 from racer import run
+import numpy as np
    
 def train_epochs(args, data_transform):
     training_dataset = DrivingDataset(root_dir=args.train_dir,
@@ -26,8 +27,8 @@ def train_epochs(args, data_transform):
                                         classes=args.n_steering_classes,
                                         transform=data_transform)
     
-    training_iterator = DataLoader(training_dataset, batch_size=args.batch_size, shuffle=True, num_workers=1)
-    validation_iterator = DataLoader(validation_dataset, batch_size=args.batch_size, shuffle=True, num_workers=1)
+    training_iterator = DataLoader(training_dataset, batch_size=args.batch_size, shuffle=True, num_workers=2)
+    validation_iterator = DataLoader(validation_dataset, batch_size=args.batch_size, shuffle=True, num_workers=2)
     driving_policy = DiscreteDrivingPolicy(n_classes=args.n_steering_classes).to(DEVICE)
     
     opt = torch.optim.Adam(driving_policy.parameters(), lr=args.lr)
@@ -87,8 +88,10 @@ if __name__ == "__main__":
         current_learner = DiscreteDrivingPolicy(n_classes=args.n_steering_classes).to(DEVICE)
         current_learner.load_weights_from(args.weights_out_file)
         cross_track_error = run(current_learner, args)
+        print(cross_track_error)
         cr.append(cross_track_error)
         print('RETRAINING LEARNER ON AGGREGATED DATASET')
         args.weights_out_file = os.path.join("./weights", "learner_{}_weights.weights".format(i))
         train_epochs(args, data_transform)
+    plt.plot(np.arange(args.dagger_iterations), np.array(cr))
 
