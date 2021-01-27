@@ -86,7 +86,7 @@ if __name__ == "__main__":
         print('GETTING EXPERT DEMONSTRATIONS')
         args.run_id = i
         current_learner = DiscreteDrivingPolicy(n_classes=args.n_steering_classes).to(DEVICE)
-        current_learner.load_weights_from(args.weights_out_file)
+        current_learner.load_weights_from(args.weights_out_file, DEVICE)
         cross_track_error = run(current_learner, args)
         print(cross_track_error)
         cr.append(cross_track_error)
