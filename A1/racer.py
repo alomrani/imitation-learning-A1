@@ -20,7 +20,7 @@ def run(steering_network, args):
     expert_action = None
     cross_track_error = 0
     i = 0
-    for t in tqdm(range(args.timesteps)):
+    for t in range(args.timesteps):
         i = t
         env.render()
         
