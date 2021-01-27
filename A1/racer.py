@@ -6,7 +6,8 @@ import numpy as np
 import argparse
 import torch
 import os
-
+import imageio
+from tqdm import tqdm
 from driving_policy import DiscreteDrivingPolicy
 from utils import DEVICE, str2bool
 
@@ -19,11 +20,12 @@ def run(steering_network, args):
     expert_action = None
     cross_track_error = 0
     i = 0
-    for t in range(args.timesteps):
+    for t in tqdm(range(args.timesteps)):
         i = t
         env.render()
         
-        state, expert_action, reward, done, _ = env.step(learner_action) 
+        state, expert_action, reward, done, _ = env.step(learner_action)
+        cross_track_error += abs(env.get_cross_track_error(env.car, env.track)[0])
         if done:
             break
         
@@ -40,8 +42,7 @@ def run(steering_network, args):
         learner_action[2] = expert_brake
 
         if args.save_expert_actions:
-            scipy.misc.imsave(os.path.join(args.out_dir, 'expert_%d_%d_%f.jpg' % (args.run_id, t, expert_steer)), state)
-        cross_track_error += env.get_cross_track_error(env.car, env.track)[0]
+            imageio.imsave(os.path.join(args.out_dir, 'expert_%d_%d_%f.jpg' % (args.run_id, t, expert_steer)), state)
     env.close()
     return cross_track_error / (i + 1)
 
