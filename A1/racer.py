@@ -24,7 +24,8 @@ def run(steering_network, args):
         i = t
         env.render()
         
-        state, expert_action, reward, done, _ = env.step(learner_action) 
+        state, expert_action, reward, done, _ = env.step(learner_action)
+        cross_track_error += abs(env.get_cross_track_error(env.car, env.track)[0])
         if done:
             break
         
@@ -42,7 +43,6 @@ def run(steering_network, args):
 
         if args.save_expert_actions:
             imageio.imsave(os.path.join(args.out_dir, 'expert_%d_%d_%f.jpg' % (args.run_id, t, expert_steer)), state)
-        cross_track_error += env.get_cross_track_error(env.car, env.track)[0]
     env.close()
     return cross_track_error / (i + 1)
 

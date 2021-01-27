@@ -48,7 +48,7 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--lr", type=float, help="learning rate", default=1e-3)
-    parser.add_argument("--n_epochs", type=int, help="number of epochs", default=50)
+    parser.add_argument("--n_epochs", type=int, help="number of epochs", default=20)
     parser.add_argument("--batch_size", type=int, help="batch_size", default=256)
     parser.add_argument("--n_steering_classes", type=int, help="number of steering classes", default=20)
     parser.add_argument("--train_dir", help="directory of training data", default='./dataset_1/train')
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     parser.add_argument("--out_dir", help="directory in which to save the expert's data", default='./dataset_1/train')
     parser.add_argument("--save_expert_actions", type=str2bool, help="save the images and expert actions in the training set",
                         default=True)
-    parser.add_argument("--timesteps", type=int, help="timesteps of simulation to run, up to one full loop of the track", default=100000)
+    parser.add_argument("--timesteps", type=int, help="timesteps of simulation to run, up to one full loop of the track", default=36000)
     parser.add_argument("--expert_drives", type=str2bool, help="should the expert steer the vehicle?", default=False)
     parser.add_argument("--run_id", type=int, help="Id for this particular data collection run (e.g. dagger iterations)", default=1)
     parser.add_argument("--weighted_loss", type=str2bool,
