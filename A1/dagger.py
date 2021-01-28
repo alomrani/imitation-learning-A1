@@ -79,7 +79,7 @@ if __name__ == "__main__":
                                           transforms.ToTensor()])
     
     args.weights_out_file = os.path.join("./weights", "learner_{}_weights.weights".format(0))
-    # train_epochs(args, data_transform)
+    train_epochs(args, data_transform)
     cr = []
     for i in range(args.dagger_iterations):
 
@@ -87,11 +87,13 @@ if __name__ == "__main__":
         args.run_id = i
         current_learner = DiscreteDrivingPolicy(n_classes=args.n_steering_classes).to(DEVICE)
         current_learner.load_weights_from(args.weights_out_file, DEVICE)
-        cross_track_error = run(current_learner, args)
-        print(cross_track_error)
-        cr.append(cross_track_error)
+        cross_track_error = run(current_learner, args) # This outputs both distance and heading error, only heading error is graphed.
+        print(cross_track_error[0])
+        cr.append(cross_track_error[0])
         print('RETRAINING LEARNER ON AGGREGATED DATASET')
         args.weights_out_file = os.path.join("./weights", "learner_{}_weights.weights".format(i))
         train_epochs(args, data_transform)
+
     plt.plot(np.arange(args.dagger_iterations), np.array(cr))
+    plt.imshow()
 
