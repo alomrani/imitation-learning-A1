@@ -18,14 +18,17 @@ def run(steering_network, args):
     
     learner_action = np.array([0.0, 0.0, 0.0])
     expert_action = None
-    cross_track_error = 0
+    cross_track_error_h = 0
+    cross_track_error_d = 0
     i = 0
     for t in range(args.timesteps):
         i = t
         env.render()
         
         state, expert_action, reward, done, _ = env.step(learner_action)
-        cross_track_error += abs(env.get_cross_track_error(env.car, env.track)[0])
+        e = env.get_cross_track_error(env.car, env.track)
+        cross_track_error_h += abs(e[0])
+        cross_track_error_d += abs(e[1])
         if done:
             break
         
@@ -44,7 +47,7 @@ def run(steering_network, args):
         if args.save_expert_actions:
             imageio.imsave(os.path.join(args.out_dir, 'expert_%d_%d_%f.jpg' % (args.run_id, t, expert_steer)), state)
     env.close()
-    return cross_track_error / (i + 1)
+    return cross_track_error_h / (i + 1), cross_track_error_d / (i + 1)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
