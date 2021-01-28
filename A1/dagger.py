@@ -15,7 +15,7 @@ from utils import DEVICE, str2bool
 import torch
 from racer import run
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 def train_epochs(args, data_transform):
     training_dataset = DrivingDataset(root_dir=args.train_dir,
                                       categorical=True,
@@ -48,13 +48,13 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--lr", type=float, help="learning rate", default=1e-3)
-    parser.add_argument("--n_epochs", type=int, help="number of epochs", default=30)
+    parser.add_argument("--n_epochs", type=int, help="number of epochs", default=1)
     parser.add_argument("--batch_size", type=int, help="batch_size", default=256)
     parser.add_argument("--n_steering_classes", type=int, help="number of steering classes", default=20)
     parser.add_argument("--train_dir", help="directory of training data", default='./dataset_1/train')
     parser.add_argument("--validation_dir", help="directory of validation data", default='./dataset_1/val')
     parser.add_argument("--weights_out_file", help="where to save the weights of the network e.g. ./weights/learner_0.weights", default='./weights')
-    parser.add_argument("--dagger_iterations", help="", default=10)
+    parser.add_argument("--dagger_iterations", help="", default=1)
     parser.add_argument("--out_dir", help="directory in which to save the expert's data", default='./dataset_1/train')
     parser.add_argument("--save_expert_actions", type=str2bool, help="save the images and expert actions in the training set",
                         default=True)
