@@ -87,7 +87,7 @@ if __name__ == "__main__":
         args.run_id = i
         current_learner = DiscreteDrivingPolicy(n_classes=args.n_steering_classes).to(DEVICE)
         current_learner.load_weights_from(args.weights_out_file, device=DEVICE)
-        cross_track_error = run(current_learner, args)
+        cross_track_error = run(current_learner, args)[0]
         print(cross_track_error)
         cr.append(cross_track_error)
         print('RETRAINING LEARNER ON AGGREGATED DATASET')
