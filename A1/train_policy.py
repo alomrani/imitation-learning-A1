@@ -36,7 +36,7 @@ def train_discrete(model, iterator, opt, args):
         opt.zero_grad()
         l = model(x)
         if args.weighted_loss:
-            loss = F.cross_entropy(l, y, 1. / torch.tensor(args.class_dist))
+            loss = F.cross_entropy(l, y, 1. / torch.tensor(args.class_dist, device=DEVICE))
         else:
             loss = F.cross_entropy(l, y)
         loss.backward()
@@ -98,7 +98,6 @@ def get_class_distribution(iterator, args):
         
     return (class_dist / sum(class_dist))
 
-    
 def main(args):
     
     data_transform = transforms.Compose([ transforms.ToPILImage(),
