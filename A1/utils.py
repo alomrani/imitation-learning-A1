@@ -2,7 +2,7 @@ import torch
 
 import argparse
 # DEVICE = torch.device('cpu')
-DEVICE = torch.device('cuda')   
+DEVICE = torch.device('cuda')  
 
 
 
