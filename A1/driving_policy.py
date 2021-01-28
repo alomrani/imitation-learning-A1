@@ -73,8 +73,8 @@ class DiscreteDrivingPolicy(nn.Module):
         
         return steering_cmd
     
-    def load_weights_from(self, weights_filename):
-        weights = torch.load(weights_filename)
+    def load_weights_from(self, weights_filename, device):
+        weights = torch.load(weights_filename, map_location=device)
         self.load_state_dict( {k:v for k,v in weights.items()}, strict=True)
 
     

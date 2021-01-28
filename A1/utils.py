@@ -1,8 +1,13 @@
 import torch
 
 import argparse
+<<<<<<< HEAD
 # DEVICE = torch.device('cpu')
 DEVICE = torch.device('cuda')  
+=======
+DEVICE = torch.device('cpu')
+# DEVICE = torch.device('cuda') 
+>>>>>>> 7c18dc5e5774917a2f8e98cfbbec9aa40e5bbc1a
 
 
 
